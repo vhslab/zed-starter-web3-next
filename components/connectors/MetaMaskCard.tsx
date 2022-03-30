@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
-import { hooks, metaMask } from '../../connectors/metaMask'
+import { hooks, metaMask } from '../../util/connectors/metaMask'
 import { Accounts } from '../Accounts'
 import { Card } from '../Card'
 import { Chain } from '../Chain'
 import { ConnectWithSelect } from '../ConnectWithSelect'
 import { Status } from '../Status'
+import {Box, Divider,StatGroup, Stat, StatNumber} from "@chakra-ui/react";
 
 const { useChainId, useAccounts, useError, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
 
@@ -26,21 +27,27 @@ export default function MetaMaskCard() {
 
   return (
     <Card>
-      <div>
-        <b>MetaMask</b>
-        <Status isActivating={isActivating} error={error} isActive={isActive} />
-        <div style={{ marginBottom: '1rem' }} />
-        <Chain chainId={chainId} />
-        <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
-      </div>
-      <div style={{ marginBottom: '1rem' }} />
-      <ConnectWithSelect
-        connector={metaMask}
-        chainId={chainId}
-        isActivating={isActivating}
-        error={error}
-        isActive={isActive}
-      />
+      <Box>
+        <StatGroup>
+          <Stat>
+            <StatNumber fontSize="md">MetaMask</StatNumber>
+          </Stat>
+          <Status isActivating={isActivating} error={error} isActive={isActive}/>
+        </StatGroup>
+        <Divider my={4}/>
+      </Box>
+      <Chain chainId={chainId}/>
+      <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames}/>
+      <Box>
+        <Divider my={4}/>
+        <ConnectWithSelect
+          connector={metaMask}
+          chainId={chainId}
+          isActivating={isActivating}
+          error={error}
+          isActive={isActive}
+        />
+      </Box>
     </Card>
   )
 }

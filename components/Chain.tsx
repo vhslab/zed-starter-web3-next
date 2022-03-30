@@ -1,4 +1,10 @@
 import type { Web3ReactHooks } from '@web3-react/core'
+import {
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+} from '@chakra-ui/react'
 import { CHAINS } from '../chains'
 
 export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChainId']> }) {
@@ -8,12 +14,15 @@ export function Chain({ chainId }: { chainId: ReturnType<Web3ReactHooks['useChai
 
   if (name) {
     return (
-      <div>
-        Chain:{' '}
-        <b>
-          {name} ({chainId})
-        </b>
-      </div>
+      <Stat>
+        <StatLabel>Chain:</StatLabel>
+        <StatNumber>
+          {name}
+        </StatNumber>
+        <StatHelpText>
+          Chain ID: {chainId}
+        </StatHelpText>
+      </Stat>
     )
   }
 
