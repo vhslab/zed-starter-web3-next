@@ -1,12 +1,13 @@
+import { useCallback, useState } from 'react'
 import type { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import type { Web3ReactHooks } from '@web3-react/core'
 import type { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { WalletConnect } from '@web3-react/walletconnect'
-import { useCallback, useState } from 'react'
+import {Button, Select} from '@chakra-ui/react'
 import { CHAINS, getAddChainParameters, URLS } from '../chains'
 
-function Select({
+function ChainSelect({
   chainId,
   switchChain,
   displayDefault,
@@ -18,12 +19,12 @@ function Select({
   chainIds: number[]
 }) {
   return (
-    <select
+    <Select
       value={chainId}
       onChange={(event) => {
         switchChain?.(Number(event.target.value))
       }}
-      disabled={switchChain === undefined}
+      disabled={!switchChain}
     >
       {displayDefault ? <option value={-1}>Default Chain</option> : null}
       {chainIds.map((chainId) => (
@@ -31,7 +32,7 @@ function Select({
           {CHAINS[chainId]?.name ?? chainId}
         </option>
       ))}
-    </select>
+    </Select>
   )
 }
 
@@ -73,15 +74,19 @@ export function ConnectWithSelect({
 
   if (error) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Select
+      <>
+        <ChainSelect
           chainId={desiredChainId}
           switchChain={switchChain}
           displayDefault={displayDefault}
           chainIds={chainIds}
         />
-        <div style={{ marginBottom: '1rem' }} />
-        <button
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          size="sm"
+          isFullWidth
+          my={4}
           onClick={() =>
             connector instanceof WalletConnect || connector instanceof Network
               ? void connector.activate(desiredChainId === -1 ? undefined : desiredChainId)
@@ -89,33 +94,44 @@ export function ConnectWithSelect({
           }
         >
           Try Again?
-        </button>
-      </div>
+        </Button>
+      </>
     )
   } else if (isActive) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Select
+      <>
+        <ChainSelect
           chainId={desiredChainId === -1 ? -1 : chainId}
           switchChain={switchChain}
           displayDefault={displayDefault}
           chainIds={chainIds}
         />
-        <div style={{ marginBottom: '1rem' }} />
-        <button onClick={() => void connector.deactivate()}>Disconnect</button>
-      </div>
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          size="sm"
+          isFullWidth
+          my={4}
+          onClick={() => void connector.deactivate()}>
+          Disconnect
+        </Button>
+      </>
     )
   } else {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Select
+      <>
+        <ChainSelect
           chainId={desiredChainId}
           switchChain={isActivating ? undefined : switchChain}
           displayDefault={displayDefault}
           chainIds={chainIds}
         />
-        <div style={{ marginBottom: '1rem' }} />
-        <button
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          size="sm"
+          isFullWidth
+          my={4}
           onClick={
             isActivating
               ? undefined
@@ -127,8 +143,8 @@ export function ConnectWithSelect({
           disabled={isActivating}
         >
           Connect
-        </button>
-      </div>
+        </Button>
+      </>
     )
   }
 }
