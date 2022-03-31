@@ -1,4 +1,9 @@
 import type { Web3ReactHooks } from '@web3-react/core'
+import {
+  Stat,
+  StatLabel,
+  StatHelpText,
+} from '@chakra-ui/react'
 
 export function Status({
   isActivating,
@@ -10,19 +15,19 @@ export function Status({
   isActive: ReturnType<Web3ReactHooks['useIsActive']>
 }) {
   return (
-    <div>
+    <Stat>
       {error ? (
         <>
-          🔴 {error.name ?? 'Error'}
-          {error.message ? `: ${error.message}` : null}
+          <StatLabel>🔴 {error.name ?? 'Error'}</StatLabel>
+          <StatHelpText>{error.message ? `: ${error.message}` : null}</StatHelpText>
         </>
       ) : isActivating ? (
-        <>🟡 Connecting</>
+        <StatLabel>🟡 Connecting</StatLabel>
       ) : isActive ? (
-        <>🟢 Connected</>
+        <StatLabel>🟢 Connected</StatLabel>
       ) : (
-        <>⚪️ Disconnected</>
+        <StatLabel>⚪️ Disconnected</StatLabel>
       )}
-    </div>
+    </Stat>
   )
 }

@@ -1,19 +1,21 @@
-export function Card({ children }: { children: JSX.Element | JSX.Element[] }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        width: '20rem',
-        padding: '1rem',
-        margin: '1rem',
-        overflow: 'auto',
-        border: '1px solid',
-        borderRadius: '1rem',
-      }}
+import {FC} from "react";
+
+import { Flex } from '@chakra-ui/react'
+
+export const Card: FC = ({children}) => (
+    <Flex
+        direction="column"
+        justify="space-between"
+        w="sm"
+        m="4"
+        p="4"
+        borderWidth="1px"
+        borderStyle="solid"
+        borderColor="gray.300"
+        borderRadius="lg"
+        boxShadow="sm"
+        overflow="hidden"
     >
       {children}
-    </div>
-  )
-}
+    </Flex>
+)

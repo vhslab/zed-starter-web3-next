@@ -1,12 +1,13 @@
-import { useEffect } from 'react'
-import { coinbaseWallet, hooks } from '../../connectors/coinbaseWallet'
-import { Accounts } from '../Accounts'
-import { Card } from '../Card'
-import { Chain } from '../Chain'
-import { ConnectWithSelect } from '../ConnectWithSelect'
-import { Status } from '../Status'
+import {useEffect} from 'react'
+import {coinbaseWallet, hooks} from '../../util/connectors/coinbaseWallet'
+import {Accounts} from '../Accounts'
+import {Card} from '../Card'
+import {Chain} from '../Chain'
+import {ConnectWithSelect} from '../ConnectWithSelect'
+import {Status} from '../Status'
+import {Box, Divider, Stat, StatGroup, StatNumber} from "@chakra-ui/react";
 
-const { useChainId, useAccounts, useError, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+const {useChainId, useAccounts, useError, useIsActivating, useIsActive, useProvider, useENSNames} = hooks
 
 export default function CoinbaseWalletCard() {
   const chainId = useChainId()
@@ -26,21 +27,27 @@ export default function CoinbaseWalletCard() {
 
   return (
     <Card>
-      <div>
-        <b>Coinbase Wallet</b>
-        <Status isActivating={isActivating} error={error} isActive={isActive} />
-        <div style={{ marginBottom: '1rem' }} />
-        <Chain chainId={chainId} />
-        <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
-      </div>
-      <div style={{ marginBottom: '1rem' }} />
-      <ConnectWithSelect
-        connector={coinbaseWallet}
-        chainId={chainId}
-        isActivating={isActivating}
-        error={error}
-        isActive={isActive}
-      />
+      <Box>
+        <StatGroup>
+          <Stat>
+            <StatNumber fontSize="md">Coinbase Wallet</StatNumber>
+          </Stat>
+          <Status isActivating={isActivating} error={error} isActive={isActive}/>
+        </StatGroup>
+        <Divider my={4}/>
+        <Chain chainId={chainId}/>
+        <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames}/>
+      </Box>
+      <Box>
+        <Divider my={4}/>
+        <ConnectWithSelect
+          connector={coinbaseWallet}
+          chainId={chainId}
+          isActivating={isActivating}
+          error={error}
+          isActive={isActive}
+        />
+      </Box>
     </Card>
   )
 }
