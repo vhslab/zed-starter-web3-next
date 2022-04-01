@@ -1,53 +1,56 @@
-import { useEffect } from 'react'
-import { hooks, metaMask } from '../../util/connectors/metaMask'
-import { Accounts } from '../Accounts'
-import { Card } from '../Card'
-import { Chain } from '../Chain'
-import { ConnectWithSelect } from '../ConnectWithSelect'
-import { Status } from '../Status'
-import {Box, Divider,StatGroup, Stat, StatNumber} from "@chakra-ui/react";
+import { useEffect } from "react";
+import { Box, StatGroup, Stat, StatNumber, Button } from "@chakra-ui/react";
+import { useWeb3React } from "@web3-react/core";
+import { hooks, metaMask } from "../../util/connectors/metaMask";
+import { Card } from "../Card";
+import { Status } from "../Status";
+import { chainId } from "../../util/connectors/chainId";
+import useAuth from "../../hooks/useAuth";
 
-const { useChainId, useAccounts, useError, useIsActivating, useIsActive, useProvider, useENSNames } = hooks
+const { useAccounts, useError, useIsActivating, useIsActive } = hooks;
 
 export default function MetaMaskCard() {
-  const chainId = useChainId()
-  const accounts = useAccounts()
-  const error = useError()
-  const isActivating = useIsActivating()
+  const { user, signOut } = useAuth();
+  const { isActive } = useWeb3React();
+  const accounts = useAccounts();
+  const error = useError();
+  const isActivating = useIsActivating();
 
-  const isActive = useIsActive()
-
-  const provider = useProvider()
-  const ENSNames = useENSNames(provider)
+  const isMMActive = useIsActive();
 
   // attempt to connect eagerly on mount
   useEffect(() => {
-    void metaMask.connectEagerly()
-  }, [])
+    if (user && user?.accountType === "metamask") {
+      void metaMask.connectEagerly();
+    }
+  }, []);
+
+  const onClick = () => {
+    if (!isMMActive) {
+      metaMask.activate(chainId);
+    } else {
+      signOut();
+    }
+  };
 
   return (
     <Card>
       <Box>
         <StatGroup>
           <Stat>
+            <StatNumber fontSize="md">{accounts}</StatNumber>
             <StatNumber fontSize="md">MetaMask</StatNumber>
           </Stat>
-          <Status isActivating={isActivating} error={error} isActive={isActive}/>
+          <Status
+            isActivating={isActivating}
+            error={error}
+            isActive={isMMActive}
+          />
         </StatGroup>
-        <Divider my={4}/>
       </Box>
-      <Chain chainId={chainId}/>
-      <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames}/>
-      <Box>
-        <Divider my={4}/>
-        <ConnectWithSelect
-          connector={metaMask}
-          chainId={chainId}
-          isActivating={isActivating}
-          error={error}
-          isActive={isActive}
-        />
-      </Box>
+      <Button onClick={onClick} disabled={isActive && !isMMActive}>
+        {isMMActive ? "Disconnect" : "Connect"}
+      </Button>
     </Card>
-  )
+  );
 }
