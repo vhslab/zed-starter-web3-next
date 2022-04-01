@@ -2,7 +2,7 @@ import Script from "next/script";
 import * as snippet from "@segment/snippet";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../theme";
-import Web3Provider from "../components/Web3Provider";
+import Web3Provider from "../components/providers/Web3Provider";
 import AuthProvider from "../components/providers/AuthProvider";
 
 function renderSnippet() {
