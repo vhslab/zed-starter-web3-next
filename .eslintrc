@@ -1,0 +1,54 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:eslint-comments/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:you-dont-need-lodash-underscore/all"
+  ],
+  "rules": {
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "no-extend-native": "error",
+    "eslint-comments/no-unused-disable": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-interface": [
+      "error",
+      {
+        "allowSingleExtends": true
+      }
+    ]
+  },
+  "parserOptions": { "project": "./tsconfig.json" },
+  "settings": {
+    "react": { "version": "detect" },
+    "import/resolver": {
+      "webpack": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
+      }
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.{config,test,spec}.{ts,js}?(x)"],
+      "extends": ["plugin:node/recommended"],
+      "env": { "node": true },
+      "rules": {
+        "node/no-missing-import": "off",
+        "node/no-unpublished-import": "off",
+        "node/no-unpublished-require": "off",
+        "node/no-unsupported-features/es-syntax": ["error", { "ignores": ["modules"] }],
+        "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+      }
+    },
+    {
+      "files": ["**/*.{test,spec}.{ts,js}?(x)"],
+      "extends": ["plugin:jest/recommended"]
+    }
+  ]
+}
