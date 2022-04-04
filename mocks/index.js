@@ -1,7 +1,7 @@
-if (typeof window === "undefined") {
-  const { server } = require("./server");
-  server.listen();
+if (typeof window === 'undefined') {
+  const { server } = require('./server') // eslint-disable-line no-undef, @typescript-eslint/no-var-requires
+  server.listen()
 } else {
-  const { worker } = require("./browser");
-  worker.start();
+  const { worker } = require('./browser') // eslint-disable-line no-undef, @typescript-eslint/no-var-requires
+  worker.start()
 }
