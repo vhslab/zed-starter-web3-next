@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   Box,
   StatGroup,
@@ -9,30 +8,30 @@ import {
   FormLabel,
   FormHelperText,
   FormControl,
-} from "@chakra-ui/react";
-import { useWeb3React } from "@web3-react/core";
-import useAuth from "../../hooks/useAuth";
-import { hooks, magic } from "../../util/connectors/magic";
-import { Card } from "../Card";
-import { Status } from "../Status";
+} from '@chakra-ui/react'
+import { useWeb3React } from '@web3-react/core'
+import useAuth from '../../hooks/useAuth'
+import { hooks, magic } from '../../util/connectors/magic'
+import { Card } from '../Card'
+import { Status } from '../Status'
 
-const { useError, useIsActivating, useIsActive } = hooks;
+const { useError, useIsActivating, useIsActive } = hooks
 
 export default function MagicCard() {
-  const { user, signOut } = useAuth();
-  const { isActive } = useWeb3React();
-  const error = useError();
-  const isActivating = useIsActivating();
+  const { signOut } = useAuth()
+  const { isActive } = useWeb3React()
+  const error = useError()
+  const isActivating = useIsActivating()
 
-  const isMagicActive = useIsActive();
+  const isMagicActive = useIsActive()
 
   const onSubmit = async (e) => {
     if (!isActivating) {
-      e.preventDefault();
-      const email = e.currentTarget.elements["email"].value;
-      magic.activate({ email });
+      e.preventDefault()
+      const email = e.currentTarget.elements['email'].value
+      magic.activate({ email })
     }
-  };
+  }
 
   return (
     <Card>
@@ -41,11 +40,7 @@ export default function MagicCard() {
           <Stat>
             <StatNumber fontSize="md">Magic</StatNumber>
           </Stat>
-          <Status
-            isActivating={isActivating}
-            error={error}
-            isActive={isMagicActive}
-          />
+          <Status isActivating={isActivating} error={error} isActive={isMagicActive} />
         </StatGroup>
       </Box>
       {!isMagicActive ? (
@@ -53,14 +48,10 @@ export default function MagicCard() {
           <FormControl>
             <FormLabel htmlFor="email">Email address</FormLabel>
             <Input id="email" type="email" required />
-            <FormHelperText>We'll never share your email.</FormHelperText>
+            <FormHelperText>We&apos;ll never share your email.</FormHelperText>
           </FormControl>
-          <Button
-            type="submit"
-            isFullWidth
-            disabled={(isActive && !isMagicActive) || isActivating}
-          >
-            {isActivating ? "Connecting..." : "Connect"}
+          <Button type="submit" isFullWidth disabled={(isActive && !isMagicActive) || isActivating}>
+            {isActivating ? 'Connecting...' : 'Connect'}
           </Button>
         </form>
       ) : (
@@ -69,5 +60,5 @@ export default function MagicCard() {
         </>
       )}
     </Card>
-  );
+  )
 }
