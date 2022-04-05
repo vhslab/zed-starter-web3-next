@@ -22,16 +22,13 @@
       {
         "allowSingleExtends": true
       }
-    ]
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
   },
   "parserOptions": { "project": "./tsconfig.json" },
   "settings": {
-    "react": { "version": "detect" },
-    "import/resolver": {
-      "webpack": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts"]
-      }
-    }
+    "react": { "version": "detect" }
   },
   "overrides": [
     {
