@@ -23,7 +23,7 @@ export default function MetaMaskCard() {
     if (user && user?.accountType === 'metamask') {
       void metaMask.connectEagerly()
     }
-  }, [])
+  }, [user]);
 
   const onClick = () => {
     if (!isMMActive) {
