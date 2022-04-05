@@ -24,7 +24,7 @@ export const handlers = [
         stableAvatarUrls: {
           original: "https://i.pravatar.cc/300",
         },
-        accountType: "magic",
+        accountType: "metamask",
         email: "zed-test@yopmail.com",
       })
     );
