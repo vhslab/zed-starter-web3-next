@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../theme";
 import Web3Provider from "../components/providers/Web3Provider";
 import AuthProvider from "../components/providers/AuthProvider";
+import BiconomyProvider from "../components/providers/BiconomyProvider";
 
 function renderSnippet() {
   const opts = {
@@ -30,12 +31,14 @@ const App = ({ Component, pageProps }) => {
     <ChakraProvider theme={theme}>
       <Web3Provider>
         <AuthProvider>
-          {/* Inject the Segment snippet into the <head> of the document  */}
-          <Script
-            id="segment-script"
-            dangerouslySetInnerHTML={{ __html: renderSnippet() }}
-          />
-          <Component {...pageProps} />
+          <BiconomyProvider>
+            {/* Inject the Segment snippet into the <head> of the document  */}
+            <Script
+              id="segment-script"
+              dangerouslySetInnerHTML={{ __html: renderSnippet() }}
+            />
+            <Component {...pageProps} />
+          </BiconomyProvider>
         </AuthProvider>
       </Web3Provider>
     </ChakraProvider>
