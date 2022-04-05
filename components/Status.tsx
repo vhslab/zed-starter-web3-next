@@ -1,9 +1,5 @@
 import type { Web3ReactHooks } from '@web3-react/core'
-import {
-  Stat,
-  StatLabel,
-  StatHelpText,
-} from '@chakra-ui/react'
+import { Stat, StatLabel, StatHelpText } from '@chakra-ui/react'
 
 export function Status({
   isActivating,

@@ -1,37 +1,35 @@
-import type { AddEthereumChainParameter } from "@web3-react/types";
+import type { AddEthereumChainParameter } from '@web3-react/types'
 
-const ETH: AddEthereumChainParameter["nativeCurrency"] = {
-  name: "Ether",
-  symbol: "ETH",
-  decimals: 18,
-};
+// const ETH: AddEthereumChainParameter['nativeCurrency'] = {
+//   name: 'Ether',
+//   symbol: 'ETH',
+//   decimals: 18,
+// }
 
-const MATIC: AddEthereumChainParameter["nativeCurrency"] = {
-  name: "Matic",
-  symbol: "MATIC",
+const MATIC: AddEthereumChainParameter['nativeCurrency'] = {
+  name: 'Matic',
+  symbol: 'MATIC',
   decimals: 18,
-};
+}
 
 interface BasicChainInformation {
-  urls: string[];
-  name: string;
+  urls: string[]
+  name: string
 }
 
 interface ExtendedChainInformation extends BasicChainInformation {
-  nativeCurrency: AddEthereumChainParameter["nativeCurrency"];
-  blockExplorerUrls: AddEthereumChainParameter["blockExplorerUrls"];
+  nativeCurrency: AddEthereumChainParameter['nativeCurrency']
+  blockExplorerUrls: AddEthereumChainParameter['blockExplorerUrls']
 }
 
 function isExtendedChainInformation(
-  chainInformation: BasicChainInformation | ExtendedChainInformation
+  chainInformation: BasicChainInformation | ExtendedChainInformation,
 ): chainInformation is ExtendedChainInformation {
-  return !!(chainInformation as ExtendedChainInformation).nativeCurrency;
+  return !!(chainInformation as ExtendedChainInformation).nativeCurrency
 }
 
-export function getAddChainParameters(
-  chainId: number
-): AddEthereumChainParameter | number {
-  const chainInformation = CHAINS[chainId];
+export function getAddChainParameters(chainId: number): AddEthereumChainParameter | number {
+  const chainInformation = CHAINS[chainId]
   if (isExtendedChainInformation(chainInformation)) {
     return {
       chainId,
@@ -39,34 +37,30 @@ export function getAddChainParameters(
       nativeCurrency: chainInformation.nativeCurrency,
       rpcUrls: chainInformation.urls,
       blockExplorerUrls: chainInformation.blockExplorerUrls,
-    };
+    }
   } else {
-    return chainId;
+    return chainId
   }
 }
 
 export const CHAINS: {
-  [chainId: number]: BasicChainInformation | ExtendedChainInformation;
+  [chainId: number]: BasicChainInformation | ExtendedChainInformation
 } = {
   1: {
     urls: [
-      process.env.infuraKey
-        ? `https://mainnet.infura.io/v3/${process.env.infuraKey}`
-        : undefined,
+      process.env.infuraKey ? `https://mainnet.infura.io/v3/${process.env.infuraKey}` : undefined,
       process.env.alchemyKey
         ? `https://eth-mainnet.alchemyapi.io/v2/${process.env.alchemyKey}`
         : undefined,
-      "https://cloudflare-eth.com",
+      'https://cloudflare-eth.com',
     ].filter((url) => url !== undefined),
-    name: "Mainnet",
+    name: 'Mainnet',
   },
   5: {
     urls: [
-      process.env.infuraKey
-        ? `https://goerli.infura.io/v3/${process.env.infuraKey}`
-        : undefined,
+      process.env.infuraKey ? `https://goerli.infura.io/v3/${process.env.infuraKey}` : undefined,
     ].filter((url) => url !== undefined),
-    name: "Görli",
+    name: 'Görli',
   },
   // Polygon
   137: {
@@ -74,11 +68,11 @@ export const CHAINS: {
       process.env.infuraKey
         ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}`
         : undefined,
-      "https://polygon-rpc.com",
+      'https://polygon-rpc.com',
     ].filter((url) => url !== undefined),
-    name: "Polygon Mainnet",
+    name: 'Polygon Mainnet',
     nativeCurrency: MATIC,
-    blockExplorerUrls: ["https://polygonscan.com"],
+    blockExplorerUrls: ['https://polygonscan.com'],
   },
   80001: {
     urls: [
@@ -86,20 +80,20 @@ export const CHAINS: {
         ? `https://polygon-mumbai.infura.io/v3/${process.env.infuraKey}`
         : undefined,
     ].filter((url) => url !== undefined),
-    name: "Polygon Mumbai",
+    name: 'Polygon Mumbai',
     nativeCurrency: MATIC,
-    blockExplorerUrls: ["https://mumbai.polygonscan.com"],
+    blockExplorerUrls: ['https://mumbai.polygonscan.com'],
   },
-};
+}
 
-export const URLS: { [chainId: number]: string[] } = Object.keys(
-  CHAINS
-).reduce<{ [chainId: number]: string[] }>((accumulator, chainId) => {
-  const validURLs: string[] = CHAINS[Number(chainId)].urls;
+export const URLS: { [chainId: number]: string[] } = Object.keys(CHAINS).reduce<{
+  [chainId: number]: string[]
+}>((accumulator, chainId) => {
+  const validURLs: string[] = CHAINS[Number(chainId)].urls
 
   if (validURLs.length) {
-    accumulator[Number(chainId)] = validURLs;
+    accumulator[Number(chainId)] = validURLs
   }
 
-  return accumulator;
-}, {});
+  return accumulator
+}, {})
