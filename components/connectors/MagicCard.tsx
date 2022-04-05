@@ -48,7 +48,7 @@ export default function MagicCard() {
           <FormControl>
             <FormLabel htmlFor="email">Email address</FormLabel>
             <Input id="email" type="email" required />
-            <FormHelperText>We&apos;ll never share your email.</FormHelperText>
+            <FormHelperText>{"We'll never share your email."}</FormHelperText>
           </FormControl>
           <Button type="submit" isFullWidth disabled={(isActive && !isMagicActive) || isActivating}>
             {isActivating ? 'Connecting...' : 'Connect'}
