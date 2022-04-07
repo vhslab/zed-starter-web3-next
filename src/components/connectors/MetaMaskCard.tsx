@@ -6,6 +6,7 @@ import { Card } from '../Card'
 import { Status } from '../Status'
 import { chainId } from '../../util/connectors/chainId'
 import useAuth from '../../hooks/useAuth'
+import { getAddChainParameters } from '../../../chains'
 
 const { useAccounts, useError, useIsActivating, useIsActive } = hooks
 
@@ -25,9 +26,9 @@ export default function MetaMaskCard() {
     }
   }, [user])
 
-  const onClick = () => {
+  const onClick = async () => {
     if (!isMMActive) {
-      metaMask.activate(chainId)
+      await metaMask.activate(getAddChainParameters(chainId))
     } else {
       signOut()
     }
@@ -38,7 +39,7 @@ export default function MetaMaskCard() {
       <Box>
         <StatGroup>
           <Stat>
-            <StatNumber fontSize="md">{accounts}</StatNumber>
+            <StatNumber fontSize="xs">{accounts}</StatNumber>
             <StatNumber fontSize="md">MetaMask</StatNumber>
           </Stat>
           <Status isActivating={isActivating} error={error} isActive={isMMActive} />
