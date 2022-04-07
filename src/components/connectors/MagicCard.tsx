@@ -15,11 +15,12 @@ import { hooks, magic } from '../../util/connectors/magic'
 import { Card } from '../Card'
 import { Status } from '../Status'
 
-const { useError, useIsActivating, useIsActive } = hooks
+const { useError, useIsActivating, useIsActive, useAccount } = hooks
 
 export default function MagicCard() {
   const { signOut } = useAuth()
   const { isActive } = useWeb3React()
+  const account = useAccount()
   const error = useError()
   const isActivating = useIsActivating()
 
@@ -38,6 +39,7 @@ export default function MagicCard() {
       <Box>
         <StatGroup>
           <Stat>
+            <StatNumber fontSize="xs">{account}</StatNumber>
             <StatNumber fontSize="md">Magic</StatNumber>
           </Stat>
           <Status isActivating={isActivating} error={error} isActive={isMagicActive} />
