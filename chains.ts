@@ -1,10 +1,10 @@
 import type { AddEthereumChainParameter } from '@web3-react/types'
 
-// const ETH: AddEthereumChainParameter['nativeCurrency'] = {
-//   name: 'Ether',
-//   symbol: 'ETH',
-//   decimals: 18,
-// }
+const ETH: AddEthereumChainParameter['nativeCurrency'] = {
+  name: 'Ether',
+  symbol: 'ETH',
+  decimals: 18,
+}
 
 const MATIC: AddEthereumChainParameter['nativeCurrency'] = {
   name: 'Matic',
@@ -55,12 +55,14 @@ export const CHAINS: {
       'https://cloudflare-eth.com',
     ].filter((url) => url !== undefined),
     name: 'Mainnet',
+    nativeCurrency: ETH,
   },
   5: {
     urls: [
       process.env.infuraKey ? `https://goerli.infura.io/v3/${process.env.infuraKey}` : undefined,
     ].filter((url) => url !== undefined),
     name: 'Görli',
+    nativeCurrency: ETH,
   },
   // Polygon
   137: {
