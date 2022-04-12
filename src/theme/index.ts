@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react'
+import type { SystemStyleObject } from '@chakra-ui/theme-tools'
 
 // Extend the theme to include custom colors, fonts, etc
 const colors = {
@@ -15,6 +16,20 @@ const config = {
   useSystemColorMode: false,
 }
 
-const theme = extendTheme({ colors, config })
+const Link: SystemStyleObject = {
+  baseStyle: {
+    color: 'green.400',
+  },
+}
+const Modal: SystemStyleObject = {
+  baseStyle: {
+    header: {
+      // bg: 'brand.900',
+      // TODO change the font-size here
+    },
+  },
+}
+
+const theme = extendTheme({ colors, config, components: { Link, Modal } })
 
 export default theme
