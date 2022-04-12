@@ -20,6 +20,9 @@ interface IAuthContext {
   signIn: () => void
   signOut: () => void
   isSigningIn: boolean
+  isSigningModalOpen: boolean
+  openSignInModal: () => void
+  closeSignInModal: () => void
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -27,6 +30,9 @@ export const AuthContext = createContext<IAuthContext>({
   signIn: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   signOut: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   isSigningIn: false,
+  isSigningModalOpen: false,
+  openSignInModal: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  closeSignInModal: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 
 const zedApiBaseUrl = process.env.NEXT_PUBLIC_API_ROOT_URL ?? 'https://api.dev.zed.run'
@@ -44,9 +50,11 @@ interface Props {
 export default function AuthProvider({ children }: Props) {
   const { provider, account, connector } = useWeb3React()
   const [isMounted, setIsMounted] = useState(false)
+
   useDidMount(() => setIsMounted(true))
   const [user, setUser] = useLocalstorageState<User | null>('user', null)
   const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
+  const [isSigningModalOpen, setIsSigningModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     // Sign out if the jwt is expired or cannot be decoded
@@ -92,9 +100,28 @@ export default function AuthProvider({ children }: Props) {
     connector.deactivate()
     delete ZedApiClient.defaults.headers.common.Authorization
   }
+  const openSignInModal = () => {
+    // if (user) return
+    // TODO do stuff
+    setIsSigningModalOpen(true)
+  }
 
+  const closeSignInModal = () => {
+    // TODO do stuff
+    setIsSigningModalOpen(false)
+  }
   return (
-    <AuthContext.Provider value={{ user: isMounted ? user : null, signIn, signOut, isSigningIn }}>
+    <AuthContext.Provider
+      value={{
+        user: isMounted ? user : null,
+        signIn,
+        signOut,
+        isSigningIn,
+        isSigningModalOpen,
+        openSignInModal,
+        closeSignInModal,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
