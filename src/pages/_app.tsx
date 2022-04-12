@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import theme from '../theme'
 import Web3Provider from '../components/providers/Web3Provider'
 import AuthProvider from '../components/providers/AuthProvider'
+import SignInModal from '../components/SignInModal'
 import { AppProps } from 'next/app'
 import BiconomyProvider from '../components/providers/BiconomyProvider'
 
@@ -36,6 +37,7 @@ const App = ({ Component, pageProps }: AppProps) => {
             {/* Inject the Segment snippet into the <head> of the document  */}
             <Script id="segment-script" dangerouslySetInnerHTML={{ __html: renderSnippet() }} />
             <Component {...pageProps} />
+            <SignInModal />
           </BiconomyProvider>
         </AuthProvider>
       </Web3Provider>
