@@ -8,7 +8,7 @@ import {
   ModalCloseButton,
   Text,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import useAuth from '../../hooks/useAuth'
 import MetaMaskCard from '../../components/connectors/MetaMaskCard'
@@ -58,9 +58,11 @@ function SignInModal() {
   const { isSigningModalOpen, closeSignInModal, user } = useAuth()
   const [currentStep, setCurrentStep] = useState('welcome')
 
-  if (user) {
-    closeSignInModal()
-  }
+  useEffect(() => {
+    if (user) {
+      closeSignInModal()
+    }
+  }, [closeSignInModal, user])
 
   return (
     <Modal isCentered isOpen={isSigningModalOpen} onClose={closeSignInModal}>
