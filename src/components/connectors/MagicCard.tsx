@@ -2,28 +2,16 @@ import { Button, Input, FormLabel, FormHelperText, FormControl } from '@chakra-u
 import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
-// import useAuth from '../../hooks/useAuth'
 import { hooks, magic } from '../../util/connectors/magic'
-// import { Card } from '../Card'
-// import { Status } from '../Status'
 
 import ConnectorCard from './ConnectorCard'
 
-const {
-  useIsActivating,
-  useIsActive,
-  // useError,
-  // useAccount
-} = hooks
+const { useIsActivating, useIsActive } = hooks
 
 export default function MagicCard() {
   const { isActive } = useWeb3React()
   const isActivating = useIsActivating()
   const isMagicActive = useIsActive()
-
-  // const account = useAccount()
-  // const error = useError()
-  // const { signOut } = useAuth()
 
   const [shouldDisplayForm, setShouldDisplayForm] = useState(false)
 

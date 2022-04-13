@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-// import { useWeb3React } from '@web3-react/core'
 
 import useAuth from '../../hooks/useAuth'
 import { hooks, metaMask } from '../../util/connectors/metaMask'
@@ -8,26 +7,17 @@ import { getAddChainParameters } from '../../../chains'
 import ConnectorCard from './ConnectorCard'
 import ErrorSection from './ErrorSection'
 
-const {
-  useIsActive,
-  // useAccounts,
-  useError,
-  // useIsActivating,
-} = hooks
+const { useIsActive, useError, useIsActivating } = hooks
 
 export default function MetaMaskCard() {
-  const { user, signOut } = useAuth()
-  // const { isActive } = useWeb3React()
-  // const accounts = useAccounts()
-  // const isActivating = useIsActivating()
-  const error = useError()
+  const { user } = useAuth()
   const isMMActive = useIsActive()
+  const isActivating = useIsActivating()
+  const error = useError()
 
   const onClick = async () => {
     if (!isMMActive) {
       await metaMask.activate(getAddChainParameters(chainId))
-    } else {
-      signOut()
     }
   }
 
@@ -42,6 +32,7 @@ export default function MetaMaskCard() {
       <ConnectorCard
         description="Browser Extension"
         icon="/assets/images/icn-mmask.svg"
+        isLoading={isActivating}
         onClick={onClick}
         title="Metamask"
       />
