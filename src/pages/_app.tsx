@@ -1,11 +1,14 @@
 import Script from 'next/script'
 import * as snippet from '@segment/snippet'
 import { ChakraProvider } from '@chakra-ui/react'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import theme from '../theme'
 import Web3Provider from '../components/providers/Web3Provider'
 import AuthProvider from '../components/providers/AuthProvider'
 import { AppProps } from 'next/app'
 import BiconomyProvider from '../components/providers/BiconomyProvider'
+
+const queryClient = new QueryClient()
 
 function renderSnippet() {
   const opts = {
@@ -33,9 +36,11 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Web3Provider>
         <AuthProvider>
           <BiconomyProvider>
-            {/* Inject the Segment snippet into the <head> of the document  */}
-            <Script id="segment-script" dangerouslySetInnerHTML={{ __html: renderSnippet() }} />
-            <Component {...pageProps} />
+            <QueryClientProvider client={queryClient}>
+              {/* Inject the Segment snippet into the <head> of the document  */}
+              <Script id="segment-script" dangerouslySetInnerHTML={{ __html: renderSnippet() }} />
+              <Component {...pageProps} />
+            </QueryClientProvider>
           </BiconomyProvider>
         </AuthProvider>
       </Web3Provider>
