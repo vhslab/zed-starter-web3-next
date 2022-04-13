@@ -17,6 +17,7 @@ export const styles = {
   },
   modalContent: {
     bgColor: 'brand.1100',
+    w: ['90%', '100%'],
   },
   modalDescription: {
     color: 'brand.600',
@@ -29,7 +30,7 @@ export const styles = {
   },
   modalHeader: {
     color: 'brand.600',
-    fontSize: 24,
+    fontSize: [20, 24],
     fontWeight: '700',
     lineHeight: 8,
   },
