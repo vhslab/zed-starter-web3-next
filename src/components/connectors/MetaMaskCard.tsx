@@ -1,23 +1,25 @@
 import { useEffect } from 'react'
-import { Flex, StatGroup, Stat, StatNumber, Text, Image, Button } from '@chakra-ui/react'
-import { useWeb3React } from '@web3-react/core'
-import { hooks, metaMask } from '../../util/connectors/metaMask'
-import { Card } from '../Card'
-import { Status } from '../Status'
-import { chainId } from '../../util/connectors/chainId'
-import useAuth from '../../hooks/useAuth'
-import { getAddChainParameters } from '../../../chains'
+// import { useWeb3React } from '@web3-react/core'
 
-const { useAccounts, useError, useIsActivating, useIsActive } = hooks
+import useAuth from '../../hooks/useAuth'
+import { hooks, metaMask } from '../../util/connectors/metaMask'
+import { chainId } from '../../util/connectors/chainId'
+import { getAddChainParameters } from '../../../chains'
+import ConnectorCard from './ConnectorCard'
+
+const {
+  useIsActive,
+  // useAccounts,
+  // useError,
+  // useIsActivating,
+} = hooks
 
 export default function MetaMaskCard() {
   const { user, signOut } = useAuth()
-  const { isActive } = useWeb3React()
-  const accounts = useAccounts()
-  const error = useError()
-  console.log(error)
-  const isActivating = useIsActivating()
-
+  // const { isActive } = useWeb3React()
+  // const accounts = useAccounts()
+  // const isActivating = useIsActivating()
+  // const error = useError()
   const isMMActive = useIsActive()
 
   // attempt to connect eagerly on mount
@@ -36,11 +38,11 @@ export default function MetaMaskCard() {
   }
 
   return (
-    <Flex position="relative" align="center" justify="center" flexDir="column">
-      <Button onClick={onClick} position="absolute" isFullWidth h="100%"></Button>
-      <Image src="/assets/images/icn-mmask.svg" />
-      <Text>Metamask</Text>
-      <Text>Browser Extension</Text>
-    </Flex>
+    <ConnectorCard
+      description="Browser Extension"
+      icon="/assets/images/icn-mmask.svg"
+      onClick={onClick}
+      title="Metamask"
+    />
   )
 }
