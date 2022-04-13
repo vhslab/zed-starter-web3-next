@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Box, StatGroup, Stat, StatNumber, Button } from '@chakra-ui/react'
+import { Flex, StatGroup, Stat, StatNumber, Text, Image, Button } from '@chakra-ui/react'
 import { useWeb3React } from '@web3-react/core'
 import { hooks, metaMask } from '../../util/connectors/metaMask'
 import { Card } from '../Card'
@@ -15,6 +15,7 @@ export default function MetaMaskCard() {
   const { isActive } = useWeb3React()
   const accounts = useAccounts()
   const error = useError()
+  console.log(error)
   const isActivating = useIsActivating()
 
   const isMMActive = useIsActive()
@@ -35,19 +36,11 @@ export default function MetaMaskCard() {
   }
 
   return (
-    <Card>
-      <Box>
-        <StatGroup>
-          <Stat>
-            <StatNumber fontSize="xs">{accounts}</StatNumber>
-            <StatNumber fontSize="md">MetaMask</StatNumber>
-          </Stat>
-          <Status isActivating={isActivating} error={error} isActive={isMMActive} />
-        </StatGroup>
-      </Box>
-      <Button onClick={onClick} disabled={isActive && !isMMActive}>
-        {isMMActive ? 'Disconnect' : 'Connect'}
-      </Button>
-    </Card>
+    <Flex position="relative" align="center" justify="center" flexDir="column">
+      <Button onClick={onClick} position="absolute" isFullWidth h="100%"></Button>
+      <Image src="/assets/images/icn-mmask.svg" />
+      <Text>Metamask</Text>
+      <Text>Browser Extension</Text>
+    </Flex>
   )
 }
