@@ -6,11 +6,12 @@ import { hooks, metaMask } from '../../util/connectors/metaMask'
 import { chainId } from '../../util/connectors/chainId'
 import { getAddChainParameters } from '../../../chains'
 import ConnectorCard from './ConnectorCard'
+import ErrorSection from './ErrorSection'
 
 const {
   useIsActive,
   // useAccounts,
-  // useError,
+  useError,
   // useIsActivating,
 } = hooks
 
@@ -19,15 +20,8 @@ export default function MetaMaskCard() {
   // const { isActive } = useWeb3React()
   // const accounts = useAccounts()
   // const isActivating = useIsActivating()
-  // const error = useError()
+  const error = useError()
   const isMMActive = useIsActive()
-
-  // attempt to connect eagerly on mount
-  useEffect(() => {
-    if (user && user?.accountType === 'metamask') {
-      void metaMask.connectEagerly()
-    }
-  }, [user])
 
   const onClick = async () => {
     if (!isMMActive) {
@@ -37,12 +31,21 @@ export default function MetaMaskCard() {
     }
   }
 
+  useEffect(() => {
+    if (user && user?.accountType === 'metamask') {
+      void metaMask.connectEagerly()
+    }
+  }, [user])
+
   return (
-    <ConnectorCard
-      description="Browser Extension"
-      icon="/assets/images/icn-mmask.svg"
-      onClick={onClick}
-      title="Metamask"
-    />
+    <>
+      <ConnectorCard
+        description="Browser Extension"
+        icon="/assets/images/icn-mmask.svg"
+        onClick={onClick}
+        title="Metamask"
+      />
+      {!!error && <ErrorSection message={error.message} />}
+    </>
   )
 }

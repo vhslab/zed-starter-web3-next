@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@biconomy/mexa": "^2.0.31",
+    "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
