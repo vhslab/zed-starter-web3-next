@@ -4,6 +4,7 @@ import axios from 'axios'
 import applyCaseMiddleware from 'axios-case-converter'
 import { useDidMount, useLocalstorageState } from 'rooks'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
+import { useDisclosure } from '@chakra-ui/react'
 
 interface User {
   stableName: string
@@ -20,6 +21,9 @@ interface IAuthContext {
   signIn: () => void
   signOut: () => void
   isSigningIn: boolean
+  isSignInModalOpen: boolean
+  onSignInModalOpen: () => void
+  onSignInModalClose: () => void
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -27,6 +31,9 @@ export const AuthContext = createContext<IAuthContext>({
   signIn: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   signOut: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   isSigningIn: false,
+  isSignInModalOpen: false,
+  onSignInModalOpen: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  onSignInModalClose: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 
 const zedApiBaseUrl = process.env.NEXT_PUBLIC_API_ROOT_URL ?? 'https://api.dev.zed.run'
@@ -44,9 +51,15 @@ interface Props {
 export default function AuthProvider({ children }: Props) {
   const { provider, account, connector } = useWeb3React()
   const [isMounted, setIsMounted] = useState(false)
+
   useDidMount(() => setIsMounted(true))
   const [user, setUser] = useLocalstorageState<User | null>('user', null)
   const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
+  const {
+    isOpen: isSignInModalOpen,
+    onOpen: onSignInModalOpen,
+    onClose: onSignInModalClose,
+  } = useDisclosure()
 
   useEffect(() => {
     // Sign out if the jwt is expired or cannot be decoded
@@ -94,7 +107,17 @@ export default function AuthProvider({ children }: Props) {
   }
 
   return (
-    <AuthContext.Provider value={{ user: isMounted ? user : null, signIn, signOut, isSigningIn }}>
+    <AuthContext.Provider
+      value={{
+        user: isMounted ? user : null,
+        signIn,
+        signOut,
+        isSigningIn,
+        isSignInModalOpen,
+        onSignInModalOpen,
+        onSignInModalClose,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
