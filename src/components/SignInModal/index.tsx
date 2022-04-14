@@ -8,13 +8,17 @@ import {
   ModalCloseButton,
   Text,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import useAuth from '../../hooks/useAuth'
 import MetaMaskCard from '../../components/connectors/MetaMaskCard'
 import MagicCard from '../../components/connectors/MagicCard'
 
 import { styles } from './styles'
+
+interface SignInModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
 
 enum Connector {
   MetaMask = 'MetaMask',
@@ -34,18 +38,11 @@ const CONTENT = {
   },
 }
 
-function SignInModal() {
-  const { isSigningModalOpen, closeSignInModal, user } = useAuth()
+function SignInModal({ isOpen, onClose }: SignInModalProps) {
   const [connector, setConnector] = useState(Connector.MetaMask)
 
-  useEffect(() => {
-    if (user) {
-      closeSignInModal()
-    }
-  }, [closeSignInModal, user])
-
   return (
-    <Modal isCentered isOpen={isSigningModalOpen} onClose={closeSignInModal}>
+    <Modal isCentered isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent {...styles.modalContent}>
         <ModalHeader textAlign="center" {...styles.modalHeader}>

@@ -35,6 +35,7 @@ export default function MagicCard() {
           <Button
             type="submit"
             isFullWidth
+            isLoading={isActivating}
             disabled={(isActive && !isMagicActive) || isActivating}
             mt={6}
           >
