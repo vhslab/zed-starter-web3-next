@@ -13,7 +13,6 @@ import { useState } from 'react'
 import MetaMaskCard from '../../components/connectors/MetaMaskCard'
 import MagicCard from '../../components/connectors/MagicCard'
 import useAuth from '../../hooks/useAuth'
-import { styles } from './styles'
 
 enum Connector {
   MetaMask = 'MetaMask',
@@ -40,21 +39,19 @@ function SignInModal() {
   return (
     <Modal isCentered isOpen={isSignInModalOpen} onClose={onSignInModalClose}>
       <ModalOverlay />
-      <ModalContent {...styles.modalContent}>
-        <ModalHeader textAlign="center" {...styles.modalHeader}>
-          {CONTENT[connector].title}
-        </ModalHeader>
+      <ModalContent>
+        <ModalHeader>{CONTENT[connector].title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text textAlign="center" {...styles.modalDescription}>
-            {CONTENT[connector].description}
-          </Text>
+          <Text variant="modalDescription">{CONTENT[connector].description}</Text>
           {connector === Connector.MetaMask ? <MetaMaskCard /> : <MagicCard />}
           <Button
+            _focus={{ outline: 'none' }}
+            isFullWidth
             onClick={() =>
               setConnector(connector === Connector.MetaMask ? Connector.Magic : Connector.MetaMask)
             }
-            {...styles.ghostButton}
+            variant="ghost"
           >
             {CONTENT[connector].footerButtonLabel}
           </Button>

@@ -16,7 +16,7 @@ const ConnectorCard = ({
 }: ConnectorCardProps) => {
   return (
     <Flex
-      bgColor="brand.1000"
+      bgColor="brand.800"
       align="center"
       flexDir="column"
       justify="center"
@@ -24,10 +24,10 @@ const ConnectorCard = ({
       position="relative"
     >
       <Image alt={icon} src={icon} {...iconProps} />
-      <Text color="brand.600" fontSize={18} fontWeight="700" lineHeight={6} mt={5}>
+      <Text color="brand.700" fontSize={18} fontWeight="700" lineHeight={6} mt={5}>
         {title}
       </Text>
-      <Text color="brand.600" fontSize={14} fontWeight="500" lineHeight={5} opacity={0.32}>
+      <Text color="brand.700" fontSize={14} fontWeight="500" lineHeight={5} opacity={0.32}>
         {description}
       </Text>
       <Button position="absolute" h="100%" w="100%" {...otherProps} />

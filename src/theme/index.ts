@@ -3,18 +3,13 @@ import { extendTheme } from '@chakra-ui/react'
 // Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {
-    1100: '#22262D',
-    1000: '#2A2E35',
-    900: '#1a365d',
-    800: '#153e75',
-    700: '#2a69ac',
-    600: '#F0F8FF',
+    900: '#22262D',
+    800: '#2A2E35',
+    700: '#F0F8FF',
   },
-  custom: {
-    green: {
-      900: '#27B18A',
-      800: '#2ECCA0',
-    },
+  green: {
+    900: '#27B18A',
+    800: '#2ECCA0',
   },
 }
 
@@ -29,6 +24,59 @@ const config = {
   useSystemColorMode: false,
 }
 
-const theme = extendTheme({ colors, config, fonts })
+const components = {
+  Button: {
+    variants: {
+      ghost: {
+        color: 'green.900',
+        fontWeight: '700',
+        my: 2,
+        p: 0,
+        _hover: {
+          bgColor: 'transparent',
+          color: 'green.800',
+        },
+      },
+    },
+  },
+  Modal: {
+    parts: ['content'],
+    defaultProps: {
+      variant: 'default',
+    },
+    variants: {
+      default: {
+        dialog: {
+          bgColor: 'brand.900',
+          w: ['90%', '100%'],
+        },
+        header: {
+          color: 'brand.700',
+          fontSize: [20, 24],
+          fontWeight: '700',
+          lineHeight: 8,
+          mt: 4,
+          textAlign: 'center',
+        },
+      },
+    },
+  },
+  Text: {
+    variants: {
+      modalDescription: {
+        color: 'brand.700',
+        fontSize: 12,
+        fontWeight: '500',
+        letterSpacing: 0.2475,
+        lineHeight: 4,
+        mb: 4,
+        opacity: 0.64,
+        textAlign: 'center',
+      },
+    },
+  },
+}
+
+const theme = extendTheme({ colors, config, components, fonts })
 
 export default theme
