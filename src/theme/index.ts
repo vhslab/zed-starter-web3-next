@@ -30,6 +30,7 @@ const components = {
       ghost: {
         color: 'green.900',
         fontWeight: '700',
+        fontSize: ['14px', '16px'],
         my: 2,
         p: 0,
         _hover: {
