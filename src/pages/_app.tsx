@@ -13,6 +13,7 @@ import Web3Provider from '../components/providers/Web3Provider'
 import AuthProvider from '../components/providers/AuthProvider'
 import { AppProps } from 'next/app'
 import BiconomyProvider from '../components/providers/BiconomyProvider'
+import SignInModal from '../components/SignInModal'
 
 const queryClient = new QueryClient()
 
@@ -46,6 +47,7 @@ const App = ({ Component, pageProps }: AppProps) => {
               {/* Inject the Segment snippet into the <head> of the document  */}
               <Script id="segment-script" dangerouslySetInnerHTML={{ __html: renderSnippet() }} />
               <Component {...pageProps} />
+              <SignInModal />
             </QueryClientProvider>
           </BiconomyProvider>
         </AuthProvider>

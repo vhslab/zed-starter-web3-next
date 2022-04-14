@@ -12,13 +12,8 @@ import { useState } from 'react'
 
 import MetaMaskCard from '../../components/connectors/MetaMaskCard'
 import MagicCard from '../../components/connectors/MagicCard'
-
+import useAuth from '../../hooks/useAuth'
 import { styles } from './styles'
-
-interface SignInModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
 
 enum Connector {
   MetaMask = 'MetaMask',
@@ -38,11 +33,12 @@ const CONTENT = {
   },
 }
 
-function SignInModal({ isOpen, onClose }: SignInModalProps) {
+function SignInModal() {
+  const { isSignInModalOpen, onSignInModalClose } = useAuth()
   const [connector, setConnector] = useState(Connector.MetaMask)
 
   return (
-    <Modal isCentered isOpen={isOpen} onClose={onClose}>
+    <Modal isCentered isOpen={isSignInModalOpen} onClose={onSignInModalClose}>
       <ModalOverlay />
       <ModalContent {...styles.modalContent}>
         <ModalHeader textAlign="center" {...styles.modalHeader}>
