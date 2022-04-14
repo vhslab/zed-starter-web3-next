@@ -16,47 +16,27 @@ import MagicCard from '../../components/connectors/MagicCard'
 
 import { styles } from './styles'
 
-const getBody = (step, setCurrentStep) => {
-  if (step === 'welcome')
-    return (
-      <ModalContent {...styles.modalContent}>
-        <ModalHeader textAlign="center" {...styles.modalHeader}>
-          Start playing ZED Run
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Text textAlign="center" {...styles.modalDescription}>
-            Sign in to start playing! Or if you&rsquo;re a new user, sign up to set up Metamask.{' '}
-          </Text>
-          <MetaMaskCard />
-          <Button onClick={() => setCurrentStep('email-sign-in')} {...styles.ghostButton}>
-            Or sign in with email
-          </Button>
-        </ModalBody>
-      </ModalContent>
-    )
-  if (step === 'email-sign-in')
-    return (
-      <ModalContent {...styles.modalContent}>
-        <ModalHeader textAlign="center" {...styles.modalHeader}>
-          Sign in with email
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Text textAlign="center" {...styles.modalDescription}>
-            Sign in if you have an existing Magic Link account.
-          </Text>
-          <MagicCard />
-          <Button onClick={() => setCurrentStep('welcome')} {...styles.ghostButton}>
-            Don&rsquo;t have a Magic Link account ?
-          </Button>
-        </ModalBody>
-      </ModalContent>
-    )
+enum Connector {
+  MetaMask = 'MetaMask',
+  Magic = 'Magic',
 }
+
+const CONTENT = {
+  [Connector.MetaMask]: {
+    title: 'Start playing ZED Run',
+    description: "Sign in to start playing! Or if you're a new user, sign up to set up Metamask.",
+    footerButtonLabel: 'Or sign in with email',
+  },
+  [Connector.Magic]: {
+    title: 'Sign in with email',
+    description: 'Sign in if you have an existing Magic Link account.',
+    footerButtonLabel: "Don't have a Magic Link account ?",
+  },
+}
+
 function SignInModal() {
   const { isSigningModalOpen, closeSignInModal, user } = useAuth()
-  const [currentStep, setCurrentStep] = useState('welcome')
+  const [connector, setConnector] = useState(Connector.MetaMask)
 
   useEffect(() => {
     if (user) {
@@ -67,7 +47,26 @@ function SignInModal() {
   return (
     <Modal isCentered isOpen={isSigningModalOpen} onClose={closeSignInModal}>
       <ModalOverlay />
-      {getBody(currentStep, setCurrentStep)}
+      <ModalContent {...styles.modalContent}>
+        <ModalHeader textAlign="center" {...styles.modalHeader}>
+          {CONTENT[connector].title}
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Text textAlign="center" {...styles.modalDescription}>
+            {CONTENT[connector].description}
+          </Text>
+          {connector === Connector.MetaMask ? <MetaMaskCard /> : <MagicCard />}
+          <Button
+            onClick={() =>
+              setConnector(connector === Connector.MetaMask ? Connector.Magic : Connector.MetaMask)
+            }
+            {...styles.ghostButton}
+          >
+            {CONTENT[connector].footerButtonLabel}
+          </Button>
+        </ModalBody>
+      </ModalContent>
     </Modal>
   )
 }

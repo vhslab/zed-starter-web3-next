@@ -33,5 +33,6 @@ export const styles = {
     fontSize: [20, 24],
     fontWeight: '700',
     lineHeight: 8,
+    mt: 4,
   },
 }
