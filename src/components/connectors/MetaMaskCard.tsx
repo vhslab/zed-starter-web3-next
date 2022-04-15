@@ -9,13 +9,22 @@ import ErrorSection from './ErrorSection'
 
 const { useIsActive, useError, useIsActivating } = hooks
 
-export default function MetaMaskCard() {
+export default function MetaMaskCard({
+  setShowInstallMetaMaskGuide,
+}: {
+  setShowInstallMetaMaskGuide: (show: boolean) => void
+}) {
   const { user } = useAuth()
   const isMMActive = useIsActive()
   const isActivating = useIsActivating()
   const error = useError()
+  const hasMetaMaskInstalled = !!window.ethereum
 
   const onClick = async () => {
+    if (!hasMetaMaskInstalled) {
+      setShowInstallMetaMaskGuide(true)
+      return
+    }
     if (!isMMActive) {
       await metaMask.activate(getAddChainParameters(chainId))
     }

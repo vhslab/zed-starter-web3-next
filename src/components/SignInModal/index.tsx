@@ -7,12 +7,15 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  IconButton,
 } from '@chakra-ui/react'
+import { ArrowBackIcon } from '@chakra-ui/icons'
 import { useState } from 'react'
 
 import MetaMaskCard from '../../components/connectors/MetaMaskCard'
 import MagicCard from '../../components/connectors/MagicCard'
 import useAuth from '../../hooks/useAuth'
+import InstallMetaMaskGuideSection from '../sections/InstallMetaMaskGuide'
 
 enum Connector {
   MetaMask = 'MetaMask',
@@ -32,30 +35,60 @@ const CONTENT = {
   },
 }
 
-function SignInModal() {
+const BackButton = ({ onClick }: { onClick: () => void }) => (
+  <IconButton
+    aria-label="Back to choose the login method"
+    bgColor="transparent"
+    fontSize="22px"
+    h="24px"
+    icon={<ArrowBackIcon color="brand.700" opacity={0.8} />}
+    left={3}
+    onClick={onClick}
+    top={3}
+    w="24px"
+  />
+)
+
+const SignInModal = () => {
   const { isSignInModalOpen, onSignInModalClose } = useAuth()
   const [connector, setConnector] = useState(Connector.MetaMask)
+  const [showInstallMetaMaskGuide, setShowInstallMetaMaskGuide] = useState(false)
 
   return (
     <Modal isCentered isOpen={isSignInModalOpen} onClose={onSignInModalClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{CONTENT[connector].title}</ModalHeader>
+        {showInstallMetaMaskGuide && (
+          <BackButton onClick={() => setShowInstallMetaMaskGuide(false)} />
+        )}
         <ModalCloseButton />
-        <ModalBody>
-          <Text variant="modalDescription">{CONTENT[connector].description}</Text>
-          {connector === Connector.MetaMask ? <MetaMaskCard /> : <MagicCard />}
-          <Button
-            _focus={{ outline: 'none' }}
-            isFullWidth
-            onClick={() =>
-              setConnector(connector === Connector.MetaMask ? Connector.Magic : Connector.MetaMask)
-            }
-            variant="ghost"
-          >
-            {CONTENT[connector].footerButtonLabel}
-          </Button>
-        </ModalBody>
+        {showInstallMetaMaskGuide ? (
+          <InstallMetaMaskGuideSection />
+        ) : (
+          <>
+            <ModalHeader>{CONTENT[connector].title}</ModalHeader>
+            <ModalBody>
+              <Text variant="modalDescription">{CONTENT[connector].description}</Text>
+              {connector === Connector.MetaMask ? (
+                <MetaMaskCard setShowInstallMetaMaskGuide={setShowInstallMetaMaskGuide} />
+              ) : (
+                <MagicCard />
+              )}
+              <Button
+                _focus={{ outline: 'none' }}
+                isFullWidth
+                onClick={() =>
+                  setConnector(
+                    connector === Connector.MetaMask ? Connector.Magic : Connector.MetaMask,
+                  )
+                }
+                variant="ghost"
+              >
+                {CONTENT[connector].footerButtonLabel}
+              </Button>
+            </ModalBody>
+          </>
+        )}
       </ModalContent>
     </Modal>
   )
