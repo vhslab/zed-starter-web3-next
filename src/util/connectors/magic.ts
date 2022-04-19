@@ -1,7 +1,7 @@
 import { Magic } from '@web3-react/magic'
 import { initializeConnector } from '@web3-react/core'
 import { chainId } from './chainId'
-import { CHAINS } from '../../../chains'
+import { CHAINS } from '../chains'
 
 export const [magic, hooks] = initializeConnector<Magic>(
   (actions) =>
