@@ -4,7 +4,10 @@ import axios from 'axios'
 import applyCaseMiddleware from 'axios-case-converter'
 import { useDidMount, useLocalstorageState } from 'rooks'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
-import { useDisclosure } from '@chakra-ui/react'
+import { useDisclosure, useToast } from '@chakra-ui/react'
+import { metaMask } from '../../util/connectors/metaMask'
+import { getAddChainParameters } from '../../util/chains'
+import { chainId } from '../../util/connectors/chainId'
 
 interface User {
   stableName: string
@@ -36,7 +39,8 @@ export const AuthContext = createContext<IAuthContext>({
   onSignInModalClose: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
 })
 
-const zedApiBaseUrl = process.env.NEXT_PUBLIC_API_ROOT_URL ?? 'https://api.dev.zed.run'
+const zedApiBaseUrl =
+  `${process.env.NEXT_PUBLIC_API_ROOT_URL}/api/v1/` ?? 'https://api.dev.zed.run/api/v1/'
 
 const ZedApiClient = applyCaseMiddleware(
   axios.create({
@@ -50,6 +54,7 @@ interface Props {
 
 export default function AuthProvider({ children }: Props) {
   const { provider, account, connector } = useWeb3React()
+  const toast = useToast()
   const [isMounted, setIsMounted] = useState(false)
 
   useDidMount(() => setIsMounted(true))
@@ -62,6 +67,12 @@ export default function AuthProvider({ children }: Props) {
   } = useDisclosure()
 
   useEffect(() => {
+    if (user && user?.accountType === 'metamask') {
+      void metaMask.activate(getAddChainParameters(chainId))
+    }
+  }, [user])
+
+  useEffect(() => {
     // Sign out if the jwt is expired or cannot be decoded
     if (isMounted && user) {
       try {
@@ -72,7 +83,7 @@ export default function AuthProvider({ children }: Props) {
       }
       signOut()
     }
-  }, [user])
+  }, [user, isMounted])
 
   const signIn = async () => {
     if (isSigningIn) return
@@ -80,11 +91,11 @@ export default function AuthProvider({ children }: Props) {
     try {
       const {
         data: { message },
-      } = await ZedApiClient.get<{ message: string }>(`/signing_message?address=${account}`)
+      } = await ZedApiClient.get<{ message: string }>(`users/signing_message/${account}`)
 
       const signedMessage = await provider.getSigner().signMessage(message)
 
-      const { data } = await ZedApiClient.post<User>('/users/login', {
+      const { data } = await ZedApiClient.post<User>('users/login', {
         address: account,
         signedMessage,
       })
@@ -92,9 +103,17 @@ export default function AuthProvider({ children }: Props) {
       setUser(data)
 
       ZedApiClient.defaults.headers.common['Authorization'] = `Bearer ${data.jwt}`
-    } catch (error) {
-      signOut()
+    } catch (err) {
+      const error = err?.response?.data?.error ?? err?.message
       console.log(error)
+      if (error === 'not found') {
+        toast({
+          title: 'This address is not registered on ZED RUN',
+          status: 'error',
+          duration: 2500,
+        })
+      }
+      signOut()
     }
 
     setIsSigningIn(false)

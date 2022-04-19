@@ -1,9 +1,6 @@
-import { useEffect } from 'react'
-
-import useAuth from '../../hooks/useAuth'
 import { hooks, metaMask } from '../../util/connectors/metaMask'
 import { chainId } from '../../util/connectors/chainId'
-import { getAddChainParameters } from '../../../chains'
+import { getAddChainParameters } from '../../util/chains'
 import ConnectorCard from './ConnectorCard'
 import ErrorSection from './ErrorSection'
 
@@ -14,7 +11,6 @@ export default function MetaMaskCard({
 }: {
   setShowInstallMetaMaskGuide: (show: boolean) => void
 }) {
-  const { user } = useAuth()
   const isMMActive = useIsActive()
   const isActivating = useIsActivating()
   const error = useError()
@@ -29,12 +25,6 @@ export default function MetaMaskCard({
       await metaMask.activate(getAddChainParameters(chainId))
     }
   }
-
-  useEffect(() => {
-    if (user && user?.accountType === 'metamask') {
-      void metaMask.connectEagerly()
-    }
-  }, [user])
 
   return (
     <>
