@@ -18,8 +18,6 @@ interface Props {
 
 function DatadogRumProvider({ children }: Props) {
   useEffect(() => {
-    console.log('applicationId', DATA_DOG_RUM_APPLICATION_ID)
-    console.log('clientToken', DATA_DOG_CLIENT_TOKEN)
     datadogRum.init({
       applicationId: DATA_DOG_RUM_APPLICATION_ID,
       clientToken: DATA_DOG_CLIENT_TOKEN,
