@@ -1,0 +1,7 @@
+Add this step:
+
+- name: upload-sourcemaps-datadog
+run: npx @datadog/datadog-ci sourcemaps upload dist/ --release-version=${{steps.package-version.outputs.current-version}} --service=zed-web --minified-path-prefix=https://zed.run/
+env:
+  DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+  DATADOG_APP_KEY: ${{ secrets.DATADOG_APP_KEY }}
