@@ -6,10 +6,10 @@ import { DatadogRumUser } from './types'
 import {
   DATA_DOG_SITE,
   DATA_DOG_RUM_APPLICATION_ID,
-  DATA_DOG_RUM_CLIENT_ID,
+  DATA_DOG_CLIENT_TOKEN,
   DATA_DOG_SERVICE_NAME,
 } from '../../util/datadog'
-import { DEV_MODE, VERSION } from '../../util/constants'
+import { VERSION } from '../../util/constants'
 
 import Context from './Context'
 
@@ -21,11 +21,12 @@ function DatadogRumProvider({ children }: Props) {
   useEffect(() => {
     datadogRum.init({
       applicationId: DATA_DOG_RUM_APPLICATION_ID,
-      clientToken: DATA_DOG_RUM_CLIENT_ID,
+      clientToken: DATA_DOG_CLIENT_TOKEN,
       site: DATA_DOG_SITE,
       service: DATA_DOG_SERVICE_NAME,
       sampleRate: 20,
-      env: DEV_MODE ? 'Dev' : 'Prod',
+      // env: DEV_MODE ? 'Dev' : 'Prod',
+      env: 'test',
       version: VERSION,
     })
   })

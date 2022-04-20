@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react'
 import { datadogLogs } from '@datadog/browser-logs'
 
-import { DATA_DOG_CLIENT_ID, DATA_DOG_SITE, DATA_DOG_SERVICE_NAME } from '../../util/datadog'
+import { DATA_DOG_CLIENT_TOKEN, DATA_DOG_SITE, DATA_DOG_SERVICE_NAME } from '../../util/datadog'
 import { DEV_MODE, VERSION } from '../../util/constants'
 
 import Context from './Context'
@@ -15,7 +15,7 @@ function DatadogLoggerProvider({ children }: Props) {
 
   useEffect(() => {
     datadogLogs.init({
-      clientToken: DATA_DOG_CLIENT_ID,
+      clientToken: DATA_DOG_CLIENT_TOKEN,
       site: DATA_DOG_SITE,
       service: DATA_DOG_SERVICE_NAME,
       forwardErrorsToLogs: false,

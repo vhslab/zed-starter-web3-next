@@ -8,6 +8,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react'
 import { metaMask } from '../../util/connectors/metaMask'
 import { getAddChainParameters } from '../../util/chains'
 import { chainId } from '../../util/connectors/chainId'
+import { useDatadogLogger } from '../../hooks/useDatadogLogger'
 
 interface User {
   stableName: string
@@ -60,6 +61,7 @@ export default function AuthProvider({ children }: Props) {
   useDidMount(() => setIsMounted(true))
   const [user, setUser] = useLocalstorageState<User | null>('user', null)
   const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
+  const { debug } = useDatadogLogger()
   const {
     isOpen: isSignInModalOpen,
     onOpen: onSignInModalOpen,
@@ -98,6 +100,11 @@ export default function AuthProvider({ children }: Props) {
       const { data } = await ZedApiClient.post<User>('users/login', {
         address: account,
         signedMessage,
+      })
+
+      //TODO: Remove it, it's just for testing
+      debug('TEST: User has logged in', {
+        userAddress: account,
       })
 
       setUser(data)
