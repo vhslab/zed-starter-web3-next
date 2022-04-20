@@ -1,8 +1,6 @@
 import React, { useMemo, useEffect } from 'react'
 import { datadogRum } from '@datadog/browser-rum'
 
-import { DatadogRumUser } from './types'
-
 import {
   DATA_DOG_SITE,
   DATA_DOG_RUM_APPLICATION_ID,
@@ -12,6 +10,7 @@ import {
 import { DEV_MODE, VERSION } from '../../util/constants'
 
 import Context from './Context'
+import { DatadogRumUser } from './types'
 
 interface Props {
   children: React.ReactNode
