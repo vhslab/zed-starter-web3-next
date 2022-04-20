@@ -9,8 +9,8 @@ import {
   Text,
   IconButton,
 } from '@chakra-ui/react'
-import { ArrowBackIcon } from '@chakra-ui/icons'
-import { useState } from 'react'
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons'
+import { useEffect, useMemo, useState } from 'react'
 
 import MetaMaskCard from '../../components/connectors/MetaMaskCard'
 import MagicCard from '../../components/connectors/MagicCard'
@@ -20,19 +20,6 @@ import InstallMetaMaskGuideSection from '../sections/InstallMetaMaskGuide'
 enum Connector {
   MetaMask = 'MetaMask',
   Magic = 'Magic',
-}
-
-const CONTENT = {
-  [Connector.MetaMask]: {
-    title: 'Start playing ZED Run',
-    description: "Sign in to start playing! Or if you're a new user, sign up to set up Metamask.",
-    footerButtonLabel: 'Or sign in with email',
-  },
-  [Connector.Magic]: {
-    title: 'Sign in with email',
-    description: 'Sign in if you have an existing Magic Link account.',
-    footerButtonLabel: "Don't have a Magic Link account ?",
-  },
 }
 
 const BackButton = ({ onClick }: { onClick: () => void }) => (
@@ -53,6 +40,40 @@ const SignInModal = () => {
   const { isSignInModalOpen, onSignInModalClose } = useAuth()
   const [connector, setConnector] = useState(Connector.MetaMask)
   const [showInstallMetaMaskGuide, setShowInstallMetaMaskGuide] = useState(false)
+  const [showMagicForm, setShowMagicForm] = useState(false)
+
+  const content = useMemo(() => {
+    if (showMagicForm) {
+      return {
+        title: 'ENTER YOUR EMAIL',
+        description: '',
+        footerButtonLabel: 'If you used Metamask to sign in previously, sign in with Metamask',
+      }
+    }
+    return {
+      title: 'SIGN IN',
+      description: 'Sign in to start playing ZED RUN.',
+      footerButtonLabel:
+        connector === Connector.MetaMask
+          ? 'Or sign in with email'
+          : "Don't have a Magic Link account?",
+    }
+  }, [connector, showMagicForm])
+
+  const footerButtonLabelStyles = showMagicForm
+    ? {
+        color: 'brand.700',
+        fontSize: '12px',
+        fontWeight: '500',
+        opacity: 0.64,
+      }
+    : {}
+
+  useEffect(() => {
+    if (connector === Connector.MetaMask && showMagicForm) {
+      setShowMagicForm(false)
+    }
+  }, [connector, showMagicForm])
 
   return (
     <Modal isCentered isOpen={isSignInModalOpen} onClose={onSignInModalClose}>
@@ -61,31 +82,38 @@ const SignInModal = () => {
         {showInstallMetaMaskGuide && (
           <BackButton onClick={() => setShowInstallMetaMaskGuide(false)} />
         )}
+        {showMagicForm && <BackButton onClick={() => setShowMagicForm(false)} />}
         <ModalCloseButton />
         {showInstallMetaMaskGuide ? (
           <InstallMetaMaskGuideSection />
         ) : (
           <>
-            <ModalHeader>{CONTENT[connector].title}</ModalHeader>
+            <ModalHeader>{content.title}</ModalHeader>
             <ModalBody>
-              <Text variant="modalDescription">{CONTENT[connector].description}</Text>
+              {content.description && <Text variant="modalDescription">{content.description}</Text>}
               {connector === Connector.MetaMask ? (
                 <MetaMaskCard setShowInstallMetaMaskGuide={setShowInstallMetaMaskGuide} />
               ) : (
-                <MagicCard />
+                <MagicCard showMagicForm={showMagicForm} setShowMagicForm={setShowMagicForm} />
               )}
-              <Button
-                _focus={{ outline: 'none' }}
-                isFullWidth
-                onClick={() =>
-                  setConnector(
-                    connector === Connector.MetaMask ? Connector.Magic : Connector.MetaMask,
-                  )
-                }
-                variant="ghost"
-              >
-                {CONTENT[connector].footerButtonLabel}
-              </Button>
+              {content.footerButtonLabel && (
+                <Button
+                  _focus={{ outline: 'none' }}
+                  mt={8}
+                  isFullWidth
+                  onClick={() =>
+                    setConnector(
+                      connector === Connector.MetaMask ? Connector.Magic : Connector.MetaMask,
+                    )
+                  }
+                  rightIcon={!showMagicForm && <ArrowForwardIcon />}
+                  variant="ghost"
+                  whiteSpace={showMagicForm ? 'normal' : 'nowrap'}
+                  {...footerButtonLabelStyles}
+                >
+                  {content.footerButtonLabel}
+                </Button>
+              )}
             </ModalBody>
           </>
         )}

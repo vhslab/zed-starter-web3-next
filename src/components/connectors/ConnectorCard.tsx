@@ -20,10 +20,13 @@ const ConnectorCard = ({
       align="center"
       flexDir="column"
       justify="center"
+      maxW="352px"
+      minH="144px"
+      mx="auto"
       p={6}
       position="relative"
     >
-      <Image alt={icon} src={icon} {...iconProps} />
+      <Image alt={title} src={icon} {...iconProps} />
       <Text color="brand.700" fontSize={18} fontWeight="700" lineHeight={6} mt={5}>
         {title}
       </Text>

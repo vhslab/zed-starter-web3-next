@@ -1,19 +1,25 @@
-import { Button, Input, FormLabel, FormHelperText, FormControl } from '@chakra-ui/react'
+import { Button, Flex, Input, Text } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 
 import { hooks, magic } from '../../util/connectors/magic'
+import { isValidEmail } from '../../util/helpers'
 
 import ConnectorCard from './ConnectorCard'
 
 const { useIsActivating, useIsActive } = hooks
 
-export default function MagicCard() {
+export default function MagicCard({
+  showMagicForm,
+  setShowMagicForm,
+}: {
+  showMagicForm: boolean
+  setShowMagicForm: (showMagicForm: boolean) => void
+}) {
   const { isActive } = useWeb3React()
   const isActivating = useIsActivating()
   const isMagicActive = useIsActive()
-
-  const [shouldDisplayForm, setShouldDisplayForm] = useState(false)
+  const [email, setEmail] = useState('')
 
   const onSubmit = async (e) => {
     if (!isActivating) {
@@ -25,30 +31,35 @@ export default function MagicCard() {
 
   return (
     <>
-      {shouldDisplayForm ? (
-        <form onSubmit={onSubmit}>
-          <FormControl>
-            <FormLabel htmlFor="email">Email address</FormLabel>
-            <Input id="email" type="email" required />
-            <FormHelperText>We will send you a confirmation email with magic link.</FormHelperText>
-          </FormControl>
+      {showMagicForm ? (
+        <Flex as="form" align="center" flexDir="column" maxW="280px" mx="auto" onSubmit={onSubmit}>
+          <Input
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Email address"
+            type="email"
+            value={email}
+          />
+          <Text color="brand.700" fontSize="12px" fontWeight="500" mt={2} opacity={0.32}>
+            We will send you a confirmation email with magic link.
+          </Text>
           <Button
-            type="submit"
-            isFullWidth
+            disabled={(isActive && !isMagicActive) || isActivating || !isValidEmail(email)}
             isLoading={isActivating}
-            disabled={(isActive && !isMagicActive) || isActivating}
-            mt={6}
+            mt={4}
+            mx="auto"
+            type="submit"
+            variant="primary"
           >
-            {isActivating ? 'Connecting...' : 'Connect'}
+            Continue
           </Button>
-        </form>
+        </Flex>
       ) : (
         <ConnectorCard
           description="Browser Extension"
           icon="/assets/images/icn-email.svg"
           iconProps={{ h: '16px', w: '22px' }}
           title="Email"
-          onClick={() => setShouldDisplayForm(true)}
+          onClick={() => setShowMagicForm(true)}
         />
       )}
     </>
