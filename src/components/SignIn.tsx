@@ -20,15 +20,24 @@ export default function SignInButton() {
     if (isActive && account && !user && !isSigningIn) {
       signIn()
     }
-  }, [isActive])
+  }, [account, isActive, isSigningIn, signIn, user])
 
   useEffect(() => {
-    if (!!user && isSignInModalOpen) {
+    if (!!user && !!account && isSignInModalOpen) {
       onSignInModalClose()
     }
-  }, [isSignInModalOpen, onSignInModalClose, user])
+  }, [account, isSignInModalOpen, onSignInModalClose, user])
 
-  if (!user) return <Button onClick={onSignInModalOpen}>Sign in</Button>
+  if (!user)
+    return (
+      <Button onClick={onSignInModalOpen} variant="primary">
+        Sign in
+      </Button>
+    )
 
-  return <Button onClick={signOut}>Sign out</Button>
+  return (
+    <Button onClick={signOut} variant="secondary">
+      Sign out
+    </Button>
+  )
 }

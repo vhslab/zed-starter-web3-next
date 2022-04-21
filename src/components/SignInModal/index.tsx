@@ -26,13 +26,13 @@ const BackButton = ({ onClick }: { onClick: () => void }) => (
   <IconButton
     aria-label="Back to choose the login method"
     bgColor="transparent"
-    fontSize="22px"
-    h="24px"
+    fontSize="xl"
+    h={6}
     icon={<ArrowBackIcon color="brand.700" opacity={0.8} />}
     left={3}
     onClick={onClick}
     top={3}
-    w="24px"
+    w={6}
   />
 )
 
@@ -63,8 +63,8 @@ const SignInModal = () => {
   const footerButtonLabelStyles = showMagicForm
     ? {
         color: 'brand.700',
-        fontSize: '12px',
-        fontWeight: '500',
+        fontSize: 'xs',
+        fontWeight: 'medium',
         opacity: 0.64,
       }
     : {}
@@ -99,7 +99,7 @@ const SignInModal = () => {
               {content.footerButtonLabel && (
                 <Button
                   _focus={{ outline: 'none' }}
-                  mt={8}
+                  my={8}
                   isFullWidth
                   onClick={() =>
                     setConnector(
