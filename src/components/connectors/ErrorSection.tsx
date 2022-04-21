@@ -18,7 +18,7 @@ const ErrorSection = ({ message }: ErrorSectionProps) => {
       p={4}
     >
       <WarningIcon w={6} h={6} color="red.500" />
-      <Text color="red.500" fontWeight="500" mx="auto" textAlign="center">
+      <Text color="red.500" fontWeight="medium" mx="auto" textAlign="center">
         {message}
       </Text>
     </Flex>

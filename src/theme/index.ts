@@ -1,27 +1,16 @@
 import { extendTheme } from '@chakra-ui/react'
+import { transparentize } from '@chakra-ui/theme-tools'
 
-// Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {
     900: '#22262D',
     800: '#2A2E35',
     700: '#F0F8FF',
   },
-  brandAlpha: {
-    900: 'rgba(240, 248, 255, 0.64)',
-    800: 'rgba(240, 248, 255, 0.32)',
-    700: 'rgba(240, 248, 255, 0.24)',
-    600: 'rgba(240, 248, 255, 0.16)',
-  },
   green: {
-    900: '#27B18A',
-    800: '#2ECCA0',
-  },
-  greenAlpha: {
-    900: 'rgba(49,125,108, 0.85)',
-    800: 'rgba(39, 177, 138, 0.85)',
-    700: 'rgba(49,125,108, 0.32)',
-    600: 'rgba(39, 177, 138, 0.32)',
+    900: '#317D6C',
+    800: '#27B18A',
+    700: '#2ECCA0',
   },
 }
 
@@ -30,7 +19,32 @@ const fonts = {
   body: 'Montserrat, sans-serif',
 }
 
-// Add your color mode config
+const fontSizes = {
+  xs: '0.75rem',
+  sm: '0.875rem',
+  md: '1rem',
+  lg: '1.125rem',
+  xl: '1.25rem',
+  '2xl': '1.5rem',
+  '3xl': '2rem',
+  '4xl': '2.5rem',
+  '5xl': '3rem',
+  '6xl': '3.75rem',
+  '7xl': '4.5rem',
+  '8xl': '6rem',
+  '9xl': '8rem',
+}
+
+const letterSpacings = {
+  tightest: '-0.05rem',
+  tighter: '0',
+  tight: '0.015rem',
+  normal: '0.05rem',
+  wide: '0.075rem',
+  wider: '0.09375rem',
+  widest: '0.125rem',
+}
+
 const config = {
   initialColorMode: 'dark',
   useSystemColorMode: false,
@@ -39,65 +53,83 @@ const config = {
 const components = {
   Button: {
     variants: {
-      primary: {
-        color: colors.brand[700],
-        background: `linear-gradient(90deg, ${colors.green[800]} 0%, ${colors.green[900]} 100%)`,
-        boxShadow: `0px 0px 8px ${colors.greenAlpha[600]}`,
-        borderRadius: '8px',
-        fontSize: '16px',
-        letterSpacing: '0.0666667px',
-        lineHeight: '24px',
-        p: '24px',
+      primary: ({ theme }) => ({
+        color: 'brand.700',
+        bgGradient: 'linear(to-r, green.800, green.900)',
+        boxShadow: `0 0 0.5rem ${transparentize('green.800', 0.32)(theme)}`,
+        borderRadius: 8,
+        fontSize: 'md',
+        letterSpacing: 'tighter',
+        lineHeight: 6,
+        px: 6,
+        py: 2.5,
         textAlign: 'center',
-        transition: '0.5s',
         _hover: {
-          background: `linear-gradient(90deg, ${colors.greenAlpha[800]} 0%, ${colors.greenAlpha[900]} 100%)`,
-          boxShadow: `0px 0px 8px ${colors.greenAlpha[600]}`,
+          bgGradient: `linear(to-r, ${transparentize('green.800', 0.85)(theme)},${transparentize(
+            'green.900',
+            0.85,
+          )(theme)})`,
+          boxShadow: `0 0 0.5rem ${transparentize('green.800', 0.32)(theme)}`,
+          _disabled: {
+            background: transparentize('brand.700', 0.24)(theme),
+            color: transparentize('brand.700', 0.24)(theme),
+            boxShadow: 'none',
+          },
         },
         _disabled: {
-          background: colors.brandAlpha[700],
-          color: colors.brandAlpha[700],
+          background: transparentize('brand.700', 0.24)(theme),
+          color: transparentize('brand.700', 0.24)(theme),
           opacity: 1,
         },
-      },
-      secondary: {
-        backgroundColor: colors.brandAlpha[800],
-        color: colors.brand[700],
-        fontWeight: 700,
-        padding: '10px 24px',
+      }),
+      secondary: ({ theme }) => ({
+        backgroundColor: transparentize('brand.700', 0.32)(theme),
+        color: 'brand.700',
+        fontWeight: 'bold',
+        px: 6,
+        py: 2.5,
         _hover: {
-          backgroundColor: colors.brandAlpha[700],
+          backgroundColor: transparentize('brand.700', 0.24)(theme),
         },
-      },
+      }),
       ghost: {
-        color: 'green.900',
-        fontWeight: '700',
-        fontSize: ['14px', '16px'],
-        my: 2,
+        color: 'green.800',
+        fontWeight: 'bold',
+        fontSize: ['sm', 'md'],
+        h: 0,
         p: 0,
         _hover: {
           bgColor: 'transparent',
-          color: 'green.800',
+          color: 'green.700',
+        },
+        _focus: {
+          boxShadow: 'none',
         },
       },
+    },
+  },
+  Divider: {
+    baseStyle: {
+      bgColor: 'brand.700',
+      opacity: 0.12,
     },
   },
   Heading: {
     variants: {
       h1: {
         color: 'brand.700',
-        fontSize: ['40px', '60px', '60px'],
-        letterSpacing: ['1.5px', '2px'],
+        fontSize: ['4xl', '6xl', '6xl'],
+        letterSpacing: ['wider', 'widest'],
       },
       h2: {
         color: 'brand.700',
-        fontSize: ['32px', '48px', '48px'],
-        letterSpacing: ['1.2px', '1.5px'],
+        fontSize: ['3xl', '5xl', '5xl'],
+        letterSpacing: ['wide', 'wider'],
       },
       h3: {
         color: 'brand.700',
-        fontSize: ['14px', '16px', '16px'],
-        fontWeight: '500px',
+        fontSize: ['sm', 'md', 'md'],
+        fontWeight: 'medium',
       },
     },
   },
@@ -119,8 +151,8 @@ const components = {
         },
         header: {
           color: 'brand.700',
-          fontSize: [20, 24],
-          fontWeight: '700',
+          fontSize: ['xl', '2xl'],
+          fontWeight: 'bold',
           lineHeight: 8,
           mt: 4,
           textAlign: 'center',
@@ -132,9 +164,9 @@ const components = {
     variants: {
       modalDescription: {
         color: 'brand.700',
-        fontSize: 12,
-        fontWeight: '500',
-        letterSpacing: 0.2475,
+        fontSize: 'xs',
+        fontWeight: 'medium',
+        letterSpacing: 'tight',
         lineHeight: 4,
         mb: 4,
         opacity: 0.64,
@@ -142,9 +174,9 @@ const components = {
       },
       modalTitle: {
         color: 'brand.700',
-        fontSize: [22, 25],
-        fontWeight: '700',
-        letterSpacing: 0.2475,
+        fontSize: ['xl', '2xl'],
+        fontWeight: 'bold',
+        letterSpacing: 'tight',
         lineHeight: 8,
         textAlign: 'center',
       },
@@ -152,6 +184,6 @@ const components = {
   },
 }
 
-const theme = extendTheme({ colors, config, components, fonts })
+const theme = extendTheme({ colors, config, components, fonts, fontSizes, letterSpacings })
 
 export default theme
