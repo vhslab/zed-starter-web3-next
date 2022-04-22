@@ -32,14 +32,21 @@ export default function MagicCard({
   return (
     <>
       {showMagicForm ? (
-        <Flex as="form" align="center" flexDir="column" maxW="280px" mx="auto" onSubmit={onSubmit}>
+        <Flex
+          as="form"
+          align="center"
+          flexDir="column"
+          maxW="17.5rem"
+          mx="auto"
+          onSubmit={onSubmit}
+        >
           <Input
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Email address"
             type="email"
             value={email}
           />
-          <Text color="brand.700" fontSize="12px" fontWeight="500" mt={2} opacity={0.32}>
+          <Text color="brand.700" fontSize="xs" fontWeight="medium" mt={2} opacity={0.32}>
             We will send you a confirmation email with magic link.
           </Text>
           <Button
@@ -57,7 +64,7 @@ export default function MagicCard({
         <ConnectorCard
           description="Browser Extension"
           icon="/assets/images/icn-email.svg"
-          iconProps={{ h: '16px', w: '22px' }}
+          iconProps={{ h: '1rem', w: '1.375rem' }}
           title="Email"
           onClick={() => setShowMagicForm(true)}
         />
