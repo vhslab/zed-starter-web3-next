@@ -5,15 +5,18 @@ import '@fontsource/montserrat/600.css'
 import '@fontsource/montserrat/700.css'
 
 import Script from 'next/script'
+import { AppProps } from 'next/app'
 import * as snippet from '@segment/snippet'
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import theme from '../theme'
+
 import Web3Provider from '../components/providers/Web3Provider'
 import AuthProvider from '../components/providers/AuthProvider'
-import { AppProps } from 'next/app'
 import BiconomyProvider from '../components/providers/BiconomyProvider'
 import SignInModal from '../components/SignInModal'
+import { DatadogRumProvider } from '../hooks/useDatadogRum'
+import { DatadogLoggerProvider } from '../hooks/useDatadogLogger'
+import theme from '../theme'
 
 const queryClient = new QueryClient()
 
@@ -39,20 +42,27 @@ if (process.env.NODE_ENV === 'development') {
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ChakraProvider theme={theme}>
-      <Web3Provider>
-        <AuthProvider>
-          <BiconomyProvider>
-            <QueryClientProvider client={queryClient}>
-              {/* Inject the Segment snippet into the <head> of the document  */}
-              <Script id="segment-script" dangerouslySetInnerHTML={{ __html: renderSnippet() }} />
-              <Component {...pageProps} />
-              <SignInModal />
-            </QueryClientProvider>
-          </BiconomyProvider>
-        </AuthProvider>
-      </Web3Provider>
-    </ChakraProvider>
+    <DatadogRumProvider>
+      <DatadogLoggerProvider>
+        <ChakraProvider theme={theme}>
+          <Web3Provider>
+            <AuthProvider>
+              <BiconomyProvider>
+                <QueryClientProvider client={queryClient}>
+                  {/* Inject the Segment snippet into the <head> of the document  */}
+                  <Script
+                    id="segment-script"
+                    dangerouslySetInnerHTML={{ __html: renderSnippet() }}
+                  />
+                  <Component {...pageProps} />
+                  <SignInModal />
+                </QueryClientProvider>
+              </BiconomyProvider>
+            </AuthProvider>
+          </Web3Provider>
+        </ChakraProvider>
+      </DatadogLoggerProvider>
+    </DatadogRumProvider>
   )
 }
 

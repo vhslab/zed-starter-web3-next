@@ -20,6 +20,7 @@ interface User {
 }
 
 interface IAuthContext {
+  address: string | undefined
   user: User | undefined
   signIn: () => void
   signOut: () => void
@@ -30,6 +31,7 @@ interface IAuthContext {
 }
 
 export const AuthContext = createContext<IAuthContext>({
+  address: undefined,
   user: undefined,
   signIn: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   signOut: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
@@ -59,6 +61,7 @@ export default function AuthProvider({ children }: Props) {
 
   useDidMount(() => setIsMounted(true))
   const [user, setUser] = useLocalstorageState<User | null>('user', null)
+  const [address, setAddress] = useLocalstorageState<string | null>('address', null)
   const [isSigningIn, setIsSigningIn] = useState<boolean>(false)
   const {
     isOpen: isSignInModalOpen,
@@ -101,6 +104,7 @@ export default function AuthProvider({ children }: Props) {
       })
 
       setUser(data)
+      setAddress(account)
 
       ZedApiClient.defaults.headers.common['Authorization'] = `Bearer ${data.jwt}`
     } catch (err) {
@@ -121,6 +125,7 @@ export default function AuthProvider({ children }: Props) {
 
   const signOut = () => {
     setUser(null)
+    setAddress(null)
     connector.deactivate()
     delete ZedApiClient.defaults.headers.common.Authorization
   }
@@ -129,6 +134,7 @@ export default function AuthProvider({ children }: Props) {
     <AuthContext.Provider
       value={{
         user: isMounted ? user : null,
+        address: isMounted ? address : null,
         signIn,
         signOut,
         isSigningIn,
