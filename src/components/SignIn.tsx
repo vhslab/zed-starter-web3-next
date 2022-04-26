@@ -7,7 +7,6 @@ import useAuth from '../hooks/useAuth'
 export default function SignInButton() {
   const { isActive, account } = useWeb3React()
   const {
-    address,
     user,
     signIn,
     isSigningIn,
@@ -24,12 +23,12 @@ export default function SignInButton() {
   }, [account, isActive, isSigningIn, signIn, user])
 
   useEffect(() => {
-    if (!!user && !!address && isSignInModalOpen) {
+    if (!!user && isSignInModalOpen) {
       onSignInModalClose()
     }
-  }, [address, isSignInModalOpen, onSignInModalClose, user])
+  }, [isSignInModalOpen, onSignInModalClose, user])
 
-  if (!user || !address)
+  if (!user)
     return (
       <Button onClick={onSignInModalOpen} variant="primary">
         Sign in
