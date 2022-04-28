@@ -9,6 +9,7 @@ import { AppProps } from 'next/app'
 import * as snippet from '@segment/snippet'
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { withLDProvider } from 'launchdarkly-react-client-sdk'
 
 import Web3Provider from '../components/providers/Web3Provider'
 import AuthProvider from '../components/providers/AuthProvider'
@@ -66,4 +67,10 @@ const App = ({ Component, pageProps }: AppProps) => {
   )
 }
 
-export default App
+export default withLDProvider<AppProps>({
+  clientSideID: process.env.NEXT_PUBLIC_LAUNCH_DARKLY_CLIENT_SIDE_ID,
+  options: {
+    autoAliasingOptOut: true,
+    bootstrap: 'localStorage',
+  },
+})(App)
