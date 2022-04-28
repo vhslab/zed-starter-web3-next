@@ -70,7 +70,6 @@ export const CHAINS: {
       process.env.infuraKey
         ? `https://polygon-mainnet.infura.io/v3/${process.env.infuraKey}`
         : undefined,
-      'https://polygon-rpc.com',
     ].filter((url) => url !== undefined),
     name: 'Polygon Mainnet',
     nativeCurrency: MATIC,
