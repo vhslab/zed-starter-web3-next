@@ -24,7 +24,6 @@ export default function MagicCard({
   const onSubmit = async (e) => {
     if (!isActivating) {
       e.preventDefault()
-      const email = e.currentTarget.elements['email'].value
       magic.activate({ email })
     }
   }
