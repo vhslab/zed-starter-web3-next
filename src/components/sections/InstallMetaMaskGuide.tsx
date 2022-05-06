@@ -4,6 +4,9 @@ import { Button, Flex, Text } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 
 const InstallMetaMaskGuideSection = () => {
+  const METAMASK_DEEP_LINK =
+    'https://metamask.app.link/dapp/' + window?.location?.href?.split('//')[1]
+
   return (
     <Flex align="center" flexDir="column" justify="center" px={4} py={8}>
       <Text mt={4} variant="modalTitle">
@@ -32,7 +35,7 @@ const InstallMetaMaskGuideSection = () => {
         mb={4}
         mt={4}
         rightIcon={<ExternalLinkIcon fontSize="2xl" />}
-        onClick={() => window.open('https://metamask.io/', '_blank')}
+        onClick={() => window.open(METAMASK_DEEP_LINK, '_blank')}
         variant="primary"
       >
         Install Metamask
